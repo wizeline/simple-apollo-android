@@ -1,0 +1,3 @@
+include ':simpleapollo'
+include ':app'
+rootProject.name = "Simple Apollo"
