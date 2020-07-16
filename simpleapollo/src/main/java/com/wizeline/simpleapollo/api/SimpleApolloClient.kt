@@ -2,6 +2,7 @@ package com.wizeline.simpleapollo.api
 
 import android.content.Context
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.Mutation
 import com.apollographql.apollo.api.Query
 import com.apollographql.apollo.api.cache.http.HttpCachePolicy
 import com.apollographql.apollo.cache.http.ApolloHttpCache
@@ -14,6 +15,7 @@ import com.wizeline.simpleapollo.api.constants.TimeUnit
 import com.wizeline.simpleapollo.exceptions.ExpectedParameterError
 import com.wizeline.simpleapollo.models.Response
 import com.wizeline.simpleapollo.utils.extensions.processResponse
+import kotlinx.coroutines.awaitAll
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
@@ -111,7 +113,7 @@ class SimpleApolloClient private constructor(
         httpCachePolicy: HttpCachePolicy.Policy? = null
     ): Response<T> =
         try {
-            val apolloQuery = apolloClient.query(query)
+            val apolloQuery = this.apolloClient.query(query)
                 .httpCachePolicy(
                     if (this.isDebug.not())
                         if (this.useCache)
@@ -132,6 +134,29 @@ class SimpleApolloClient private constructor(
                 )
             }
             apolloQuery.toDeferred()
+                .await()
+                .processResponse(this.isDebug)
+        } catch (e: Exception) {
+            if (this.isDebug) {
+                Timber.e(e)
+            }
+            Response.Failure(e)
+        }
+
+    suspend fun <T, M: Mutation<*, T, *>> mutate(
+        mutation: M,
+        authorizationToken: String? = null
+    ): Response<T> =
+        try {
+            val apolloMutation = this.apolloClient.mutate(mutation)
+            if (authorizationToken.isNullOrBlank().not()) {
+                apolloMutation.requestHeaders(
+                    RequestHeaders.Builder()
+                        .addHeader(AUTHORIZATION_HEADER, authorizationToken)
+                        .build()
+                )
+            }
+            apolloMutation.toDeferred()
                 .await()
                 .processResponse(this.isDebug)
         } catch (e: Exception) {
