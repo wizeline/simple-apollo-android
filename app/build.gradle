@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.apollographql.apollo'
 
 android {
     compileSdkVersion sdk.compile
@@ -29,6 +31,19 @@ dependencies {
     implementation libraries.androidx.ktx
     implementation libraries.androidx.appcompat
     implementation libraries.androidx.constraintLayout
+    implementation libraries.androidx.recyclerView
+    implementation libraries.lifecycle.ktx
+    implementation libraries.lifecycle.extensions
+
+    implementation libraries.apollo.runtime
+    implementation libraries.apollo.cache
+
+    implementation libraries.viewState
+
+    implementation libraries.koin.core
+    implementation libraries.koin.viewModel
+
+    implementation project(":simpleapollo")
 
     testImplementation libraries.junit
     androidTestImplementation libraries.extJunit
