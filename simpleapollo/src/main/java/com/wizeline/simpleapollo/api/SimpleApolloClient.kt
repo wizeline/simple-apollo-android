@@ -2,13 +2,21 @@ package com.wizeline.simpleapollo.api
 
 import android.content.Context
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.Query
+import com.apollographql.apollo.api.cache.http.HttpCachePolicy
 import com.apollographql.apollo.cache.http.ApolloHttpCache
 import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore
+import com.apollographql.apollo.coroutines.toDeferred
+import com.apollographql.apollo.request.RequestHeaders
 import com.wizeline.simpleapollo.api.cache.CacheConfiguration
+import com.wizeline.simpleapollo.api.constants.AUTHORIZATION_HEADER
 import com.wizeline.simpleapollo.api.constants.TimeUnit
 import com.wizeline.simpleapollo.exceptions.ExpectedParameterError
+import com.wizeline.simpleapollo.models.Response
+import com.wizeline.simpleapollo.utils.extensions.processResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import timber.log.Timber
 import java.io.File
 
 class SimpleApolloClient private constructor(
@@ -96,4 +104,40 @@ class SimpleApolloClient private constructor(
     }
 
     fun apolloClient(): ApolloClient = this.apolloClient
+
+    suspend fun <T, Q: Query<*, T, *>> query(
+        query: Q,
+        authorizationToken: String? = null,
+        httpCachePolicy: HttpCachePolicy.Policy? = null
+    ): Response<T> =
+        try {
+            val apolloQuery = apolloClient.query(query)
+                .httpCachePolicy(
+                    if (this.isDebug.not())
+                        if (this.useCache)
+                            httpCachePolicy ?: HttpCachePolicy.CACHE_FIRST.expireAfter(
+                                this.cacheConfiguration.expireTime,
+                                this.cacheConfiguration.expireUnit.javaTimeUnit
+                            )
+                else
+                            HttpCachePolicy.NETWORK_ONLY
+                else
+                        HttpCachePolicy.NETWORK_ONLY
+                )
+            if (authorizationToken.isNullOrBlank().not()) {
+                apolloQuery.requestHeaders(
+                    RequestHeaders.Builder()
+                        .addHeader(AUTHORIZATION_HEADER, authorizationToken)
+                        .build()
+                )
+            }
+            apolloQuery.toDeferred()
+                .await()
+                .processResponse(this.isDebug)
+        } catch (e: Exception) {
+            if (this.isDebug) {
+                Timber.e(e)
+            }
+            Response.Failure(e)
+        }
 }
