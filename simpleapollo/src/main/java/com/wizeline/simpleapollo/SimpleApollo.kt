@@ -19,8 +19,6 @@ class SimpleApollo(application: Application) {
     }
 
     private fun initializeLogger() {
-        if (BuildConfig.DEBUG) {
-            Timber.plant(SimpleApolloDebuger())
-        }
+        Timber.plant(SimpleApolloDebuger())
     }
 }
