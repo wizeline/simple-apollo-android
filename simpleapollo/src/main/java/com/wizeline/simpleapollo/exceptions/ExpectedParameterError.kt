@@ -1,5 +1,5 @@
 package com.wizeline.simpleapollo.exceptions
 
 class ExpectedParameterError(
-    val message: String
+    message: String
 ) : Exception(message)
