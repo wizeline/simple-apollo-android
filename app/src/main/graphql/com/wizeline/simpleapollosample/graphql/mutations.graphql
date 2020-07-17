@@ -1,0 +1,9 @@
+mutation CreateComment(
+  $text: String!
+) {
+  createComment(
+    text: $text
+  ) {
+    id
+  }
+}

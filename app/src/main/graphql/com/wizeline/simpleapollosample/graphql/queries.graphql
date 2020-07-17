@@ -1,0 +1,41 @@
+query AllPosts(
+  $first: Int!,
+  $orderBy: PostOrderBy!
+) {
+  allPosts(
+    first: $first,
+    orderBy: $orderBy
+  ) {
+    id
+    title
+    updatedAt
+    user {
+      id
+      name
+    }
+  }
+}
+
+query GetPost(
+  $id: ID!,
+  $commentsFirst: Int!,
+  $commentsOrderBy: CommentOrderBy!
+) {
+  Post(
+    id: $id
+  ) {
+    text
+    comments(
+      first: $commentsFirst,
+      orderBy: $commentsOrderBy
+    ) {
+      id
+      text
+      updatedAt
+      user {
+        id
+        name
+      }
+    }
+  }
+}
