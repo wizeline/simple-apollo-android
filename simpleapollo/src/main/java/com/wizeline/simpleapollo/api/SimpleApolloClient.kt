@@ -2,8 +2,10 @@ package com.wizeline.simpleapollo.api
 
 import android.content.Context
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.CustomTypeAdapter
 import com.apollographql.apollo.api.Mutation
 import com.apollographql.apollo.api.Query
+import com.apollographql.apollo.api.ScalarType
 import com.apollographql.apollo.api.cache.http.HttpCachePolicy
 import com.apollographql.apollo.cache.http.ApolloHttpCache
 import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore
@@ -35,6 +37,7 @@ class SimpleApolloClient private constructor(
         private var timeOutUnit: TimeUnit = TimeUnit.SECONDS,
         private var useCache: Boolean = false,
         private var cacheConfiguration: CacheConfiguration = CacheConfiguration(),
+        private var customTypeAdapters: Map<ScalarType, CustomTypeAdapter<*>>? = null,
         private var isDebug: Boolean = false
     ) {
 
@@ -56,6 +59,10 @@ class SimpleApolloClient private constructor(
             cacheConfiguration?.also { this.cacheConfiguration = it }
         }
 
+        fun addCustomTypeAdapters(customTypeAdapters: Map<ScalarType, CustomTypeAdapter<*>>) = apply {
+            this.customTypeAdapters = customTypeAdapters
+        }
+
         fun isDebug(isDebug: Boolean) = apply {
             this.isDebug = isDebug
         }
@@ -70,6 +77,9 @@ class SimpleApolloClient private constructor(
                 .serverUrl(graphqlServerUrl)
             if (this.useCache) {
                 apolloClient.httpCache(this.getApolloHttpCache())
+            }
+            this.customTypeAdapters?.takeUnless { it.isNullOrEmpty() }?.forEach { (scalarType, customTypeAdapter) ->
+                apolloClient.addCustomTypeAdapter(scalarType, customTypeAdapter)
             }
             return SimpleApolloClient(
                 apolloClient = apolloClient.build(),
