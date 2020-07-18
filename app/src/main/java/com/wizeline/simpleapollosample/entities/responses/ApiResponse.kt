@@ -1,4 +1,4 @@
-package com.wizeline.simpleapollosample.entities
+package com.wizeline.simpleapollosample.entities.responses
 
 sealed class ApiResponse<out T> {
     class Success<T>(val data: T) : ApiResponse<T>()
