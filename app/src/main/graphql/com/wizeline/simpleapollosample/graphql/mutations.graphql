@@ -1,7 +1,9 @@
 mutation CreateComment(
+  $postId: ID!,
   $text: String!
 ) {
   createComment(
+    postId: $postId,
     text: $text
   ) {
     id

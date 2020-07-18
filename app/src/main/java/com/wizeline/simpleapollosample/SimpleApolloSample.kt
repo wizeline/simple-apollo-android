@@ -2,7 +2,9 @@ package com.wizeline.simpleapollosample
 
 import android.app.Application
 import com.wizeline.simpleapollo.SimpleApollo
+import com.wizeline.simpleapollosample.data.dataModule
 import com.wizeline.simpleapollosample.di.mainModule
+import com.wizeline.simpleapollosample.usecases.useCasesModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
@@ -27,7 +29,9 @@ class SimpleApolloSample : Application() {
             androidFileProperties()
             modules(
                 listOf(
-                    mainModule
+                    mainModule,
+                    dataModule,
+                    useCasesModule
                 )
             )
         }

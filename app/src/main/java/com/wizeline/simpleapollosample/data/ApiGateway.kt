@@ -1,10 +1,27 @@
 package com.wizeline.simpleapollosample.data
 
-import com.wizeline.simpleapollo.exceptions.EmptyResponse
-import com.wizeline.simpleapollosample.entities.ApiResponse
-import com.wizeline.simpleapollosample.entities.ToDo
+import com.wizeline.simpleapollosample.entities.Comment
+import com.wizeline.simpleapollosample.entities.Post
+import com.wizeline.simpleapollosample.entities.responses.ApiResponse
+import com.wizeline.simpleapollosample.graphql.GetPostQuery
+import com.wizeline.simpleapollosample.graphql.type.CommentOrderBy
+import com.wizeline.simpleapollosample.graphql.type.PostOrderBy
 
 interface ApiGateway {
-    suspend fun getToDos(): ApiResponse<List<ToDo>>
-    suspend fun addToDo(toDo: ToDo): ApiResponse<ToDo>
+
+    suspend fun allPosts(
+        first: Int,
+        orderBy: PostOrderBy
+    ): ApiResponse<List<Post>>
+
+    suspend fun getPost(
+        id: String,
+        commentsFirst: Int,
+        commentsOrderBy: CommentOrderBy
+    ): ApiResponse<Post>
+
+    suspend fun createComment(
+        postId: String,
+        text: String
+    ): ApiResponse<Comment>
 }
