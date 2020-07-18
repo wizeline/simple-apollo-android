@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Simple Apollo</string>
+
+    <string name="unknown">Unknown</string>
+
+    <string name="post__author">By %1$s</string>
+    <string name="post__last_update">Last update %1$s</string>
 </resources>
