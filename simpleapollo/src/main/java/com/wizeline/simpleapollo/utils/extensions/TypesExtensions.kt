@@ -10,17 +10,20 @@ import java.util.*
 fun String.fromIso8601ToRfc822(): String =
     "${this.substring(0, this.lastIndexOf(":") + 1)}${this.substring(this.lastIndexOf(":") + 1, this.length + 1)}"
 
-fun String.toMillis(dateTimePatterns: DateTimePatterns): Long = SimpleDateFormat(
-    dateTimePatterns.pattern,
+fun String.toMillis(dateTimePattern: String, forceUtc: Boolean = false): Long = SimpleDateFormat(
+    dateTimePattern,
     Locale.getDefault()
 ).let {
+    if (forceUtc) {
+        it.timeZone = TimeZone.getTimeZone("UTC")
+    }
     it.parse(this)?.time ?: 0
 }
 
 fun Long.toDate(): Date = Date(this)
 
-fun String.toTimeAgo(dateTimePatterns: DateTimePatterns): String = DateUtils.getRelativeTimeSpanString(
-    toMillis(dateTimePatterns),
+fun String.toTimeAgo(dateTimePattern: String, forceUtc: Boolean = false): String = DateUtils.getRelativeTimeSpanString(
+    toMillis(dateTimePattern, forceUtc),
     System.currentTimeMillis(),
     DateUtils.MINUTE_IN_MILLIS,
     DateUtils.FORMAT_ABBREV_RELATIVE
@@ -33,17 +36,23 @@ fun Date.toTimeAgo(): String = DateUtils.getRelativeTimeSpanString(
     DateUtils.FORMAT_ABBREV_RELATIVE
 ).toString()
 
-fun String.toDate(dateTimePatterns: DateTimePatterns): Date? = SimpleDateFormat(
-    dateTimePatterns.pattern,
+fun String.toDate(dateTimePattern: String, forceUtc: Boolean = false): Date? = SimpleDateFormat(
+    dateTimePattern,
     Locale.getDefault()
 ).let {
+    if (forceUtc) {
+        it.timeZone = TimeZone.getTimeZone("UTC")
+    }
     it.parse(this)
 }
 
-fun Date.toSimpleApolloString(dateTimePatterns: DateTimePatterns): String = SimpleDateFormat(
-    dateTimePatterns.pattern,
+fun Date.toSimpleApolloString(dateTimePattern: String, forceUtc: Boolean = false): String = SimpleDateFormat(
+    dateTimePattern,
     Locale.getDefault()
 ).let {
+    if (forceUtc) {
+        it.timeZone = TimeZone.getTimeZone("UTC")
+    }
     it.format(this)
 }
 

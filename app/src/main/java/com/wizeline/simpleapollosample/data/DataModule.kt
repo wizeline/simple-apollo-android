@@ -18,7 +18,7 @@ val dataModule = module {
             .enableCache()
             .addCustomTypeAdapters(
                 mapOf<ScalarType, CustomTypeAdapter<*>>(
-                    Pair(CustomType.DATETIME, DateTimeCustomTypeAdapter(DateTimePatterns.RFC822_MILLIS))
+                    Pair(CustomType.DATETIME, DateTimeCustomTypeAdapter(DateTimePatterns.RFC822_MILLIS_UTC.pattern, true))
                 )
             )
             .isDebug()

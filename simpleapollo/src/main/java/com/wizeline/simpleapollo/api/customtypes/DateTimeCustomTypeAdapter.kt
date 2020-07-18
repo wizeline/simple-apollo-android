@@ -9,12 +9,13 @@ import java.lang.RuntimeException
 import java.util.*
 
 class DateTimeCustomTypeAdapter(
-    val dateTimePatterns: DateTimePatterns
+    val dateTimePattern: String,
+    val forceUtc: Boolean = false
 ) : CustomTypeAdapter<Date?> {
 
     override fun decode(value: CustomTypeValue<*>): Date? =
         try {
-            value.value?.toString()?.toDate(dateTimePatterns)
+            value.value?.toString()?.toDate(dateTimePattern, forceUtc)
         } catch (e: Exception) {
             throw RuntimeException(e)
         }
@@ -22,7 +23,7 @@ class DateTimeCustomTypeAdapter(
     override fun encode(value: Date?): CustomTypeValue<*> =
         try {
             CustomTypeValue.GraphQLString(
-                value?.toSimpleApolloString(dateTimePatterns) ?: ""
+                value?.toSimpleApolloString(dateTimePattern, forceUtc) ?: ""
             )
         } catch (e: Exception) {
             throw RuntimeException(e)

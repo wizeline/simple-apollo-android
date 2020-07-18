@@ -17,7 +17,7 @@ data class Comment(
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
-        parcel.readString()?.toDate(DateTimePatterns.RFC822_MILLIS),
+        parcel.readString()?.toDate(DateTimePatterns.RFC822_MILLIS_UTC.pattern, true),
         parcel.readParcelable(User::class.java.classLoader)
     ) {
     }
@@ -25,7 +25,7 @@ data class Comment(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
         parcel.writeString(text)
-        parcel.writeString(updatedAt?.toSimpleApolloString(DateTimePatterns.RFC822_MILLIS))
+        parcel.writeString(updatedAt?.toSimpleApolloString(DateTimePatterns.RFC822_MILLIS_UTC.pattern, true))
         parcel.writeParcelable(user, flags)
     }
 
