@@ -17,7 +17,7 @@ data class Comment(
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
-        parcel.readString()?.toDate(DateTimePatterns.RFC822_MILLIS) ?: "",
+        parcel.readString()?.toDate(DateTimePatterns.RFC822_MILLIS),
         parcel.readParcelable(User::class.java.classLoader)
     ) {
     }
