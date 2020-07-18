@@ -1,4 +1,4 @@
-package com.wizeline.simpleapollosample.di
+package com.wizeline.simpleapollosample.utils
 
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.qualifier.named
@@ -7,7 +7,7 @@ import kotlin.coroutines.CoroutineContext
 
 const val BACKGROUND_DISPATCHER = "backgroundDispatcher"
 
-val mainModule = module {
+val simpleApolloSampleModule = module {
 
     single<CoroutineContext>(named(BACKGROUND_DISPATCHER)) {
         Dispatchers.Default

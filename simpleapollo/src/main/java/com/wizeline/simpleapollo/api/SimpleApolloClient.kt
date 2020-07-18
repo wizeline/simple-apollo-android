@@ -54,7 +54,7 @@ class SimpleApolloClient private constructor(
             this.timeOutUnit = timeOutUnit
         }
 
-        fun enableCache(cacheConfiguration: CacheConfiguration?) = apply {
+        fun enableCache(cacheConfiguration: CacheConfiguration? = null) = apply {
             this.useCache = true
             cacheConfiguration?.also { this.cacheConfiguration = it }
         }
@@ -63,7 +63,7 @@ class SimpleApolloClient private constructor(
             this.customTypeAdapters = customTypeAdapters
         }
 
-        fun isDebug(isDebug: Boolean) = apply {
+        fun isDebug(isDebug: Boolean = true) = apply {
             this.isDebug = isDebug
         }
 
