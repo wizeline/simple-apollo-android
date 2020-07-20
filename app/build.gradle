@@ -49,6 +49,7 @@ dependencies {
     implementation libraries.androidx.legacy
     implementation libraries.androidx.constraintLayout
     implementation libraries.androidx.recyclerView
+    implementation libraries.material.material
     implementation libraries.lifecycle.ktx
     implementation libraries.lifecycle.extensions
 
