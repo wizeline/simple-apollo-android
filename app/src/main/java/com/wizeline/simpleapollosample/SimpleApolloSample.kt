@@ -4,6 +4,7 @@ import android.app.Application
 import com.wizeline.simpleapollo.SimpleApollo
 import com.wizeline.simpleapollosample.data.dataModule
 import com.wizeline.simpleapollosample.main.mainModule
+import com.wizeline.simpleapollosample.post.postModule
 import com.wizeline.simpleapollosample.usecases.useCasesModule
 import com.wizeline.simpleapollosample.utils.simpleApolloSampleModule
 import org.koin.android.ext.koin.androidContext
@@ -33,7 +34,8 @@ class SimpleApolloSample : Application() {
                     simpleApolloSampleModule,
                     dataModule,
                     useCasesModule,
-                    mainModule
+                    mainModule,
+                    postModule
                 )
             )
         }

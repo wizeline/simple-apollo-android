@@ -37,5 +37,13 @@ fun GetPostQuery.User.toApiModel(): User = User(
 )
 
 fun CreateCommentMutation.CreateComment.toApiModel(): Comment = Comment(
-    id = id
+    id = id,
+    text = text,
+    updatedAt = updatedAt,
+    user = user?.toApiModel()
+)
+
+fun CreateCommentMutation.User.toApiModel(): User = User(
+    id = id,
+    name = name
 )

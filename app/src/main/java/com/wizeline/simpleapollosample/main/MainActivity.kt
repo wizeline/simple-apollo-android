@@ -1,10 +1,12 @@
 package com.wizeline.simpleapollosample.main
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.wizeline.simpleapollosample.R
 import com.wizeline.simpleapollosample.entities.Post
+import com.wizeline.simpleapollosample.post.PostActivity
 import com.wizeline.viewstate.State
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -69,6 +71,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun postOnClickListener(post: Post) {
-        TODO()
+        Intent(this, PostActivity::class.java).apply {
+            putExtra("post", post)
+            startActivity(this)
+        }
     }
 }

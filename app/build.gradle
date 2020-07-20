@@ -46,6 +46,7 @@ dependencies {
     implementation libraries.kotlin
     implementation libraries.androidx.ktx
     implementation libraries.androidx.appcompat
+    implementation libraries.androidx.legacy
     implementation libraries.androidx.constraintLayout
     implementation libraries.androidx.recyclerView
     implementation libraries.lifecycle.ktx
