@@ -2,7 +2,6 @@ package com.wizeline.simpleapollosample.data
 
 import com.apollographql.apollo.api.CustomTypeAdapter
 import com.apollographql.apollo.api.ScalarType
-import com.wizeline.simpleapollo.SimpleApollo
 import com.wizeline.simpleapollo.api.SimpleApolloClient
 import com.wizeline.simpleapollo.api.constants.DateTimePatterns
 import com.wizeline.simpleapollo.api.customtypes.DateTimeCustomTypeAdapter
