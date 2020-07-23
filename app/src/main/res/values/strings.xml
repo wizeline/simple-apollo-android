@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Simple Apollo</string>
+
+    <string name="unknown">Unknown</string>
+
+    <string name="post__author">By %1$s</string>
+    <string name="post__last_update">Last update %1$s</string>
+    <string name="post__comment_hint">New comment...</string>
+    <string name="post__add_comment">Add</string>
+
+    <string name="comment__author">By %1$s</string>
+    <string name="comment_published_at">At %1$s</string>
+
 </resources>
