@@ -56,7 +56,8 @@ android {
 apollo {
     generateKotlinModels.set(true)
     customTypeMapping = [
-            "DateTime"  : "java.util.Date"
+            "DateTime"   : "java.util.Date",
+            "JSONString" : "org.json.JSONObject"
     ]
 }
 
@@ -66,7 +67,7 @@ dependencies {
     // If you want to set custom HTTP cache configuration for specific requests
     implementation 'com.apollographql.apollo:apollo-http-cache:2.0.1'
     // SimpleApollo library, see the last releases to known the last version
-    implementation 'com.github.wizeline:android-simple-apollo:1.0.0'
+    implementation 'com.github.wizeline:android-simple-apollo:1.0.1'
 }
 ```
 
@@ -193,7 +194,7 @@ val simpleApolloClient = SimpleApolloClient.Builder()
     .serverUrl(...)
     .addCustomTypeAdapters(
         mapOf(
-            Pair(CustomType.DATETIME, DateTimeCustomTypeAdapter(DateTimePatterns.ISO8601_MILLIS) // Map of Apollo ScalarType and CustomTypeAdapter, some adapters are provider by SimpleApollo
+            Pair(CustomType.DATETIME, DateTimeCustomTypeAdapter(DateTimePatterns.ISO8601_MILLIS.pattern) // Map of Apollo ScalarType and CustomTypeAdapter, some adapters are provider by SimpleApollo
         )
     )
     .build()
@@ -240,6 +241,7 @@ This enum provides the most popular RFC822 and ISO8601 DateTime patterns used by
 * ISO8601_TZ: "yyyy-MM-dd'T'HH:mm:ssXXX"
 * ISO8601_MILLIS_TZ: "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
 * ISO8601_MICROS_TZ: "yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX"
+Use the property DateTimePatterns.pattern to get the pattern string
 
 ## Exceptions
 ### EmptyResponse

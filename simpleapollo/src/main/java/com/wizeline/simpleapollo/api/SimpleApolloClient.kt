@@ -17,7 +17,6 @@ import com.wizeline.simpleapollo.api.constants.TimeUnit
 import com.wizeline.simpleapollo.exceptions.ExpectedParameterError
 import com.wizeline.simpleapollo.models.Response
 import com.wizeline.simpleapollo.utils.extensions.processResponse
-import kotlinx.coroutines.awaitAll
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
@@ -30,7 +29,7 @@ class SimpleApolloClient private constructor(
     private val isDebug: Boolean
 ) {
 
-    data class Builder(
+    class Builder(
         private var context: Context? = null,
         private var serverUrl: String? = null,
         private var timeOutValue: Long = 30,
@@ -123,7 +122,7 @@ class SimpleApolloClient private constructor(
         httpCachePolicy: HttpCachePolicy.Policy? = null
     ): Response<T> =
         try {
-            val apolloQuery = this.apolloClient.query(query)
+            this.apolloClient.query(query)
                 .httpCachePolicy(
                     if (this.isDebug.not())
                         if (this.useCache)
@@ -136,14 +135,15 @@ class SimpleApolloClient private constructor(
                 else
                         HttpCachePolicy.NETWORK_ONLY
                 )
-            if (authorizationToken.isNullOrBlank().not()) {
-                apolloQuery.requestHeaders(
-                    RequestHeaders.Builder()
-                        .addHeader(AUTHORIZATION_HEADER, authorizationToken)
-                        .build()
+                .requestHeaders(
+                    if (authorizationToken.isNullOrEmpty().not())
+                        RequestHeaders.Builder()
+                            .addHeader(AUTHORIZATION_HEADER, authorizationToken)
+                            .build()
+                else
+                        RequestHeaders.NONE
                 )
-            }
-            apolloQuery.toDeferred()
+                .toDeferred()
                 .await()
                 .processResponse(this.isDebug)
         } catch (e: Exception) {
@@ -158,15 +158,16 @@ class SimpleApolloClient private constructor(
         authorizationToken: String? = null
     ): Response<T> =
         try {
-            val apolloMutation = this.apolloClient.mutate(mutation)
-            if (authorizationToken.isNullOrBlank().not()) {
-                apolloMutation.requestHeaders(
-                    RequestHeaders.Builder()
-                        .addHeader(AUTHORIZATION_HEADER, authorizationToken)
-                        .build()
+            this.apolloClient.mutate(mutation)
+                .requestHeaders(
+                    if (authorizationToken.isNullOrEmpty().not())
+                        RequestHeaders.Builder()
+                            .addHeader(AUTHORIZATION_HEADER, authorizationToken)
+                            .build()
+                else
+                        RequestHeaders.NONE
                 )
-            }
-            apolloMutation.toDeferred()
+                .toDeferred()
                 .await()
                 .processResponse(this.isDebug)
         } catch (e: Exception) {
