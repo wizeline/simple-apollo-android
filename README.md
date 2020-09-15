@@ -9,7 +9,7 @@ First add Apollo and SimpleApollo to your gradle files
 
 ### Build gradle at project level
 build.gradle
-```
+```groovy
 buildscript {
     ...
 
@@ -33,7 +33,7 @@ allprojects {
 
 In your build gradle file at app level:
 app/build.gradle
-```
+```groovy
 apply plugin: 'com.android.application'
 ...
 apply plugin: 'com.apollographql.apollo' // Required to configure Apollo sources generator and more
@@ -56,7 +56,8 @@ android {
 apollo {
     generateKotlinModels.set(true)
     customTypeMapping = [
-            "DateTime"  : "java.util.Date"
+            "DateTime"   : "java.util.Date",
+            "JSONString" : "org.json.JSONObject"
     ]
 }
 
@@ -66,13 +67,13 @@ dependencies {
     // If you want to set custom HTTP cache configuration for specific requests
     implementation 'com.apollographql.apollo:apollo-http-cache:2.0.1'
     // SimpleApollo library, see the last releases to known the last version
-    implementation 'com.github.wizeline:android-simple-apollo:1.0.0'
+    implementation 'com.github.wizeline:android-simple-apollo:1.0.1'
 }
 ```
 
 ## Initialize SimpleApollo
 MyApplication.kt
-```
+```kotlin
 package com.example
 
 ...
@@ -92,7 +93,7 @@ class MyApplication : Application() {
 
 ## Create an SimpleApollo instance
 Network.kt
-```
+```kotlin
 package com.example.data
 
 import com.wizeline.simpleapollo.api.SimpleApolloClient
@@ -107,7 +108,7 @@ val simpleApolloClient = SimpleApolloClient.Builder()
 
 ## Make a query
 Network.kt
-```
+```kotlin
 package com.example.data
 
 import com.example.simpleapollo.models.Response
@@ -124,7 +125,7 @@ suspend fun getAllPosts(first: Int): Response<Post> =
 
 ## Make a mutation
 Network.kt
-```
+```kotlin
 package com.example.data
 
 suspend fun createComment(postId: String, text: String): Response<Comment> =
@@ -138,7 +139,7 @@ suspend fun createComment(postId: String, text: String): Response<Comment> =
 
 ## How to set a connection/read/write timeout
 Network.kt
-```
+```kotlin
 package com.example.data
 
 import com.wizeline.simpleapollo.api.SimpleApolloClient
@@ -156,7 +157,7 @@ val simpleApolloClient = SimpleApolloClient.Builder()
 
 ## HTTP cache configuration
 Network.kt
-```
+```kotlin
 package com.example.data
 
 import com.wizeline.simpleapollo.api.SimpleApolloClient
@@ -180,7 +181,7 @@ val simpleApolloClient = SimpleApolloClient.Builder()
 You need to add custom type definitions in your app/build.gradle file, see the section about the gradle files instalation to know how to do this. Then run generateApolloSources gradle task
 
 Network.kt
-```
+```kotlin
 package com.example.data
 
 import com.wizeline.simpleapollo.api.SimpleApolloClient
@@ -193,7 +194,7 @@ val simpleApolloClient = SimpleApolloClient.Builder()
     .serverUrl(...)
     .addCustomTypeAdapters(
         mapOf(
-            Pair(CustomType.DATETIME, DateTimeCustomTypeAdapter(DateTimePatterns.ISO8601_MILLIS) // Map of Apollo ScalarType and CustomTypeAdapter, some adapters are provider by SimpleApollo
+            Pair(CustomType.DATETIME, DateTimeCustomTypeAdapter(DateTimePatterns.ISO8601_MILLIS.pattern) // Map of Apollo ScalarType and CustomTypeAdapter, some adapters are provider by SimpleApollo
         )
     )
     .build()
@@ -210,7 +211,7 @@ Convert JSONString GraphQL type to JSONObject. This adapter includes a String cl
 ## Response object
 All the queries or mutations launched with the SimpleApolloClient wrappers return a Response sealed class with the following structure:
 Response.kt
-```
+```kotlin
 sealed claass Response<out T> {
     class Success<T>(val data: T) : Response<T>() // When the request is success, contains a data value with the type of return
     class Failure(val throwable: Throwable) : Response<Nothing>() // When the request failiure, contains a Throwable with the exception
@@ -240,6 +241,7 @@ This enum provides the most popular RFC822 and ISO8601 DateTime patterns used by
 * ISO8601_TZ: "yyyy-MM-dd'T'HH:mm:ssXXX"
 * ISO8601_MILLIS_TZ: "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
 * ISO8601_MICROS_TZ: "yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX"
+Use the property DateTimePatterns.pattern to get the pattern string
 
 ## Exceptions
 ### EmptyResponse
