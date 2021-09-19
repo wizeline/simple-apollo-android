@@ -29,10 +29,10 @@ dependencies {
     implementation libraries.androidx.ktx
     implementation libraries.androidx.appcompat
 
-    implementation libraries.apollo.runtime
-    implementation libraries.apollo.cache
-    implementation libraries.coroutines.core
-    implementation libraries.apollo.coroutinesSupport
+    api libraries.apollo.runtime
+    api libraries.apollo.cache
+    api libraries.coroutines.core
+    api libraries.apollo.coroutinesSupport
     implementation libraries.squareup.okhttp3
     implementation libraries.squareup.loggingInterceptor
 

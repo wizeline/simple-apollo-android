@@ -1,35 +1,35 @@
 ext {
     // App
     sdk = [
-        compile: 29,
+        compile: 30,
         min: 21,
-        target: 29,
-        buildToolsVersion: "29.0.2"
+        target: 30,
+        buildToolsVersion: "30.0.3"
     ]
-    kotlinVersion = "1.3.72"
+    kotlinVersion = "1.5.10"
 
     // Android libraries
-    appcompatVersion = "1.1.0"
-    constraintVersion = "1.1.3"
-    ktxVersion = "1.3.0"
+    appcompatVersion = "1.3.1"
+    constraintVersion = '2.1.0'
+    ktxVersion = "1.6.0"
     legacySupportVersion = "1.0.0"
-    lifecycleVersion = "2.2.0"
-    navigationVersion = '2.3.0'
-    paging_version = "2.1.2"
+    lifecycleVersion = "2.3.1"
+    navigationVersion = "2.3.5"
+    pagingVersion = "3.0.1"
     preferencesVersion = "1.1.1"
-    recyclerVersion = "1.1.0"
+    recyclerVersion = "1.2.1"
     roomVersion = "2.2.5"
     viewPager2Version = "1.0.0"
     designVersion = "1.0.0-rc01"
-    materialVersion = "1.1.0"
+    materialVersion = "1.4.0"
     coroutinesVersion = "1.3.5"
 
     // Test
     coreTestingVersion = "2.0.1"
     runnerVersion = "1.1.1"
-    espressoVersion = '3.2.0'
-    junitVersion = '4.13'
-    junitExtVersion = '1.1.1'
+    espressoVersion = "3.4.0"
+    junitVersion = "4.13.1"
+    junitExtVersion = "1.1.3"
 
     // Mocks
     mockkVersion = "1.9.3"
@@ -38,11 +38,11 @@ ext {
     mockitoAndroidVersion = "2.13.0"
 
     // External libraries
-    apolloVersion = "2.0.1"
+    apolloVersion = "2.5.9"
     koinVersion = "2.0.1"
-    timber_version = "4.7.1"
+    timber_version = "5.0.1"
     viewStateVersion = "1.0"
-    okhttp3Version = '4.7.2'
+    okhttp3Version = "4.9.0"
     glideVersion = "4.11.0"
 
     // Implementations
@@ -76,7 +76,7 @@ ext {
             navigationUi: "androidx.navigation:navigation-ui:$navigationVersion",
             navigationFragmentKtx: "androidx.navigation:navigation-fragment-ktx:$navigationVersion",
             navigationUiKtx: "androidx.navigation:navigation-ui-ktx:$navigationVersion",
-            paging: "androidx.paging:paging-runtime:$paging_version"
+            paging: "androidx.paging:paging-runtime:$pagingVersion"
         ],
         material       : [
             material: "com.google.android.material:material:${materialVersion}",
@@ -94,10 +94,15 @@ ext {
             test: "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
         ],
         lifecycle      : [
-            extensions: "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion",
-            compiler: "androidx.lifecycle:lifecycle-compiler:$lifecycleVersion",
-            testing: "androidx.arch.core:core-testing:$lifecycleVersion",
-            ktx: "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+                runtime: "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion",
+                viewModel: "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion",
+                liveData: "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion",
+                savedState: "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion",
+                service: "androidx.lifecycle:lifecycle-service:$lifecycleVersion",
+                process: "androidx.lifecycle:lifecycle-process:$lifecycleVersion",
+                reactiveStreams: "androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycleVersion",
+                compilerJava8: "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion",
+                testing: "androidx.arch.core:core-testing:$lifecycleVersion"
         ],
         koin           : [
             core: "org.koin:koin-android:$koinVersion",
